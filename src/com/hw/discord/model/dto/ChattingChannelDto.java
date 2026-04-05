@@ -1,28 +1,24 @@
 package com.hw.discord.model.dto;
 
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//import com.hw.discord.model.vo.ChattingChannel;
-
 public class ChattingChannelDto {
 	private Integer channelId;
 	private String channelName;
 	private boolean open;
-//	private List<ChattingChannel> channels = new ArrayList();
-//	{
-//		channels.add(new ChattingChannel(++channelId, "일반", true));
-//	}
 	public ChattingChannelDto() {}
+	public ChattingChannelDto(String channelName) {
+		this.channelName = channelName;
+	}
+	public ChattingChannelDto(boolean open) {
+		this.open = open;
+	}
 	public ChattingChannelDto(String channelName, boolean open) {
 		this.channelName = channelName;
 		this.open = open;
 	}
-	public ChattingChannelDto(Integer channelId, String channelName, boolean open/*, List<ChattingChannel> channels*/) {
+	public ChattingChannelDto(Integer channelId, String channelName, boolean open) {
 		this.channelId = channelId;
 		this.channelName = channelName;
 		this.open = open;
-//		this.channels = channels;
 	}
 	public Integer getChannelId() {
 		return channelId;
@@ -42,11 +38,5 @@ public class ChattingChannelDto {
 	public void setOpen(boolean open) {
 		this.open = open;
 	}
-//	public List<ChattingChannel> getChannels() {
-//		return channels;
-//	}
-//	public void setChannels(List<ChattingChannel> channels) {
-//		this.channels = channels;
-//	}
 
 }

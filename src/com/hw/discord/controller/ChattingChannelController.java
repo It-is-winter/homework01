@@ -31,9 +31,6 @@ public class ChattingChannelController {
 	 * 채널 수정
 	 */
 	public int updateChannel(int channelId, ChattingChannelDto channel) {
-//		System.out.println("controller: " + channelId);
-//		System.out.println("service: " + channel.getChannelName());
-//		System.out.println("controller: " + channel.isOpen());
 		return channelService.updateChannel(channelId, channel);
 	}
 	
@@ -41,14 +38,15 @@ public class ChattingChannelController {
 	 * channelId에 대한 ChattingChannel을 찾아주는 메소드
 	 */
 	public ChattingChannel findById(int channelId) {
+//		System.out.println("controller id : " + channelId);
 		return channelService.findById(channelId);
 	}
 	
 	/*
 	 * 채널 삭제
 	 */
-	public void deleteChannel(int channelId) {
-		channelService.deleteChannel(channelId);
+	public String deleteChannel(int channelId) {
+		return channelService.deleteChannel(channelId);
 	}
 
 }

@@ -62,7 +62,17 @@ public class ChattingChannelView {
 		List<ChattingChannel> channels = channelController.findAll();
 		if(!channels.isEmpty()) {
 			for(ChattingChannel channel : channels) {
-				System.out.println(channel);
+				StringBuilder sb = new StringBuilder();
+				sb.append(channel.getChannelId());
+				sb.append(" |\t");
+				sb.append(channel.getChannelName());
+				sb.append("\t\t");
+				if(channel.isOpen()) {
+					sb.append("공개");					
+				} else {
+					sb.append("비공개");
+				}
+				System.out.println(sb);
 			}
 		} else {
 			System.out.println("조회할 수 있는 채널이 없습니다.");
@@ -80,30 +90,6 @@ public class ChattingChannelView {
 		System.out.println("-------------------------------------------------------");
 		System.out.print("채널 이름 : ");
 		String channelName = sc.nextLine();
-		/*
-		boolean flag = true;
-		char or = ' ';
-		boolean open = false;
-		while(flag) { // O나 X 이외의 값을 입력하면 다시 이 반복문을 수행하도록 함
-					  // 사용자가 얼마나 잘못 입력할지 알 수 없음
-			System.out.print("채널의 공개를 원하시면 O 아니면 X를 입력해주세요 >");
-			or = sc.nextLine().charAt(0);
-//			System.out.println(or);
-			if((or != 'O') && (or != 'o') && (or != 'X') && (or != 'x')) {
-				System.out.println("O 또는 X를 입력해주세요(소문자도 가능)");
-				System.out.println();
-				flag = true;
-			}
-			if((or == 'O') || (or == 'o')) {
-				open = true;
-				flag = false;
-			} else if((or == 'X') || (or == 'x')) {
-				open = false;
-				flag = false;
-			}
-		}
-//		System.out.println(open);
-		*/
 		boolean open = checkOpen();
 		// view 할일 끝
 		
@@ -137,14 +123,14 @@ public class ChattingChannelView {
 		System.out.println("-------------------------------------------------------");
 		System.out.print("수정하고 싶은 채널의 번호를 입력해주세요 >");
 		String channelId = sc.nextLine();
+		int id = Integer.parseInt(channelId);
 		// 채널 이름만 변경
 		// 채널 공개여부만 변경
 		// 채널의 이름과 공개여부 변경
 		// 어떤걸 변경하고 싶을지 모름
-//		System.out.println(channelId);
 		String channelName = "";
 		boolean open = false;
-//		while(true) { // 숫자를 입력하지 않았을 때 변경선택 메뉴 다시 보여줌
+		while(true) { // 숫자를 입력하지 않았을 때 변경선택 메뉴 다시 보여줌
 			System.out.println();
 			System.out.println("무엇을 변경하시겠습니까?");
 			System.out.println("1. 채널이름만 변경하기");
@@ -159,20 +145,20 @@ public class ChattingChannelView {
 				System.out.println("숫자로 입력해주세요.");
 				sc.nextLine();
 			}
-//			System.out.println(updateMenu);
 			System.out.println();
-			int id = Integer.parseInt(channelId);
 			ChattingChannel chattingChannel = channelController.findById(id);
-//			System.out.println(chattingChannel);
+			System.out.println(chattingChannel.getChannelName());
 			switch(updateMenu) {
 			case 1 : System.out.print("변경할 채널 이름 : ");
 					 channelName = sc.nextLine();
 					 // channelId와 일치하는 ChattingChannel의 Open값 그대로 넣어주기 : 변함없음
 					 open = chattingChannel.isOpen();
+//					 System.out.println("updateName open : " + open);
 					 break;
 			case 2 : open = checkOpen(); 
 					 // channelId와 일치하는 ChattingChannel의 채널이름값 그대로 넣어주기 : 변함없음
 					 channelName = chattingChannel.getChannelName();
+//					 System.out.println("updateOpen Name : " + channelName);
 					 break;
 			case 3 : System.out.print("변경할 채널 이름 : ");
 					 channelName = sc.nextLine();
@@ -180,8 +166,6 @@ public class ChattingChannelView {
 					 break;
 			}
 			// view 역할 끝!
-//			System.out.println(channelName);
-//			System.out.println(open);
 			
 			// controller에 값 넘겨주기
 			ChattingChannelDto channel = new ChattingChannelDto(channelName, open);
@@ -189,10 +173,12 @@ public class ChattingChannelView {
 			// 수정 성공 여부 출력해주기
 			if(result == 1) {
 				System.out.println("변경 성공!");
+				break;
 			} else {
 				System.out.println("변경에 실패하였습니다..");
+				break;
 			}
-//		}
+		}
 		
 		
 	}
@@ -229,14 +215,19 @@ public class ChattingChannelView {
 	 * 채널 삭제 메소드
 	 * 채널의 아이디를 입력받아, 아이디에 맞는 채널 삭제하기
 	 */
-	public void deleteChannel() {
+	private void deleteChannel() {
 		System.out.println("-------------------------------------------------------");
 		findAll();
 		System.out.println("-------------------------------------------------------");
 		System.out.print("삭제하고 싶은 채널의 아이디를 입력해주세요 >");
 		String channelId = sc.nextLine();
 		int id = Integer.parseInt(channelId);
-		channelController.deleteChannel(id);
+		String result = channelController.deleteChannel(id);
+		if(result != null) {
+			System.out.println(result + "채널 삭제 성공했습니다!");
+		} else {
+			System.out.println("채널 삭제에 실패했습니다..");
+		}
 	}
 
 }

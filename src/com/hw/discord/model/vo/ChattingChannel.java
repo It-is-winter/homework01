@@ -36,9 +36,5 @@ public class ChattingChannel {
 		return Objects.equals(channelId, other.channelId) && Objects.equals(channelName, other.channelName)
 				&& open == other.open;
 	}
-	@Override
-	public String toString() {
-		return "ChattingChannel [channelId=" + channelId + ", channelName=" + channelName + ", open=" + open + "]";
-	}
 
 }

@@ -7,7 +7,6 @@ import com.hw.discord.model.dto.ChattingChannelDto;
 import com.hw.discord.model.vo.ChattingChannel;
 
 public class ChattingChannelService {
-	private ChattingChannelDto channelDto = new ChattingChannelDto();
 	private List<ChattingChannel> channels = new ArrayList();
 	private int channelId;
 	{
@@ -22,9 +21,6 @@ public class ChattingChannelService {
 	 * 생성된 채팅채널들 목록 전체 조회
 	 */
 	public List<ChattingChannel> findAll() {
-		// ChattingChannelDto의 초기화블록에서 미리 만들어둔 데이터 가져오기 => 어떻게..?
-//		channels.add(new ChattingChannel(channelDto.getChannelId(), channelDto.getChannelName(), channelDto.isOpen()));
-		// Dto에서 초기화블록 생성 -> get메소드로 필드 값 하나하나 가져오기 -> NullPointerException
 		return channels;
 	}
 	
@@ -52,29 +48,13 @@ public class ChattingChannelService {
 	 * 수정된 채널의 이름이 비어있거나 30자를 넘는지 확인
 	 */
 	public int updateChannel(int channelId, ChattingChannelDto channel) {
-//		System.out.println("service: " + channelId);
-//		System.out.println("service: " + channel.getChannelName());
-//		System.out.println("service: " + channel.isOpen());
-		// 입력받은 channelId값과 일치하는 channelId 값을 가진 ChattingChannel찾기
-//		if(channels.get(0).getChannelId() == id) {
-//			channels.set(0, new ChattingChannel(id, channel.getChannelName(), channel.isOpen()));
-//		}
-		/*
-		int index = 0;
-		for(ChattingChannel chan : channels) {
-			if(chan.getChannelId() == id) {
-				index = channelId - 1;
-				break;
-			}
-		}
-		*/
-//		System.out.println("index : " + index);
 //		channels.stream()
 //				.filter(c -> c.getChannelId() == channelId)
 //				.toList();
-		
+//		System.out.println("service : " + channelId);
+//		System.out.println("service : " + channel.getChannelName());
 		int index = indexOf(channelId);
-		if(index != 0) {
+		if(index != -1) {
 			String channelName = channel.getChannelName(); 
 			boolean checked = validateChannelName(channelName);
 			if(checked) {
@@ -89,8 +69,9 @@ public class ChattingChannelService {
 	 * channelId에 해당하는 ChattingChannel 찾는 메소드
 	 */
 	public ChattingChannel findById(int channelId) {
+//		System.out.println("service id : " + channelId);
 		int index = indexOf(channelId);
-		if(index != 0) {
+		if(index != -1) {
 			return channels.get(index);
 		}
 		return null;
@@ -99,9 +80,14 @@ public class ChattingChannelService {
 	/*
 	 * 채널 삭제 메소드
 	 */
-	public void deleteChannel(int channelId) {
+	public String deleteChannel(int channelId) {
 		int index = indexOf(channelId);
-		channels.remove(index);
+		// 더이상 채널이 없는데 삭제를 시도 할 수 있음
+		if(index != -1) {
+			ChattingChannel channel = channels.remove(index);
+			return channel.getChannelName();
+		}
+		return null;
 	}
 	
 	/*
@@ -121,7 +107,7 @@ public class ChattingChannelService {
 	 * 매개변수로 들어온 channelId와 일치하는 ChattingChannel의 인덱스를 찾는 메소드
 	 */
 	private int indexOf(int channelId) {
-		int index = 0;
+		int index = -1;
 		for(ChattingChannel chan : channels) {
 			if(chan.getChannelId() == channelId) {
 				index = channelId - 1;
