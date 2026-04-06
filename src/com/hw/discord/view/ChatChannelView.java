@@ -228,16 +228,32 @@ public class ChatChannelView {
 	 * 채널의 아이디를 입력받아, 아이디에 맞는 채널 삭제하기
 	 */
 	private void deleteChannel() {
-		System.out.println();
-		System.out.println("-------------------------------------------------------");
-		System.out.println("\t\t\t채널 삭제하기");
-		System.out.println("-------------------------------------------------------");
-		findAll();
-		System.out.println("-------------------------------------------------------");
-		System.out.print("삭제하고 싶은 채널의 아이디를 입력해주세요 >");
-		String channelId = sc.nextLine();
-		int id = Integer.parseInt(channelId);
-		String result = channelController.deleteChannel(id);
+		int id = 0;
+		String result = "";
+		while(true) {
+			System.out.println();
+			System.out.println("-------------------------------------------------------");
+			System.out.println("\t\t\t채널 삭제하기");
+			System.out.println("-------------------------------------------------------");
+			findAll();
+			System.out.println("-------------------------------------------------------");
+			System.out.print("삭제하고 싶은 채널의 아이디를 입력해주세요 >");
+			String channelId = sc.nextLine();
+			try {
+				id = Integer.parseInt(channelId);
+			} catch(NumberFormatException e) {
+				System.out.println("숫자로 입력해주세요.");
+				continue;
+			}
+			ChatChannel channel = channelController.findById(id);
+			if(channel != null) {
+				break;
+			} else {
+				System.out.println("존재하지 않는 채널입니다. 다시 입력해주세요.");
+				continue;
+			}
+		}
+		result = channelController.deleteChannel(id);
 		if(result != null) {
 			System.out.println(result + "채널 삭제 성공했습니다!");
 		} else {
