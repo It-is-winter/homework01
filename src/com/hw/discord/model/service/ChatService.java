@@ -65,6 +65,21 @@ public class ChatService {
 	}
 	
 	/*
+	 * Find the chat that matches the chatId
+	 */
+	public Chat findById(int chatId) {
+		int index = indexOf(chatId);
+		if(index != -1) {
+			for(int i = 0; i < chats.size(); i++) {
+				if(i == index) {
+					return chats.get(i);
+				}
+			}
+		}
+		return null;
+	}
+	
+	/*
 	 * Check that the text is not empty and its length is at most 30
 	 */
 	private boolean validateChatText(String text) {
@@ -86,21 +101,6 @@ public class ChatService {
 			}
 		}
 		return index;
-	}
-	
-	/*
-	 * Find the chat that matches the chatId
-	 */
-	private Chat findById(int chatId) {
-		int index = indexOf(chatId);
-		if(index != -1) {
-			for(int i = 0; i < chats.size(); i++) {
-				if(i == index) {
-					return chats.get(i);
-				}
-			}
-		}
-		return null;
 	}
 
 }

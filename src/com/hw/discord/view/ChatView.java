@@ -79,26 +79,33 @@ public class ChatView {
 	 * Update the chat
 	 */
 	private void updateChat() {
-		System.out.println("-------------------------------------------------------");		
-		findAll();
-		System.out.println("-------------------------------------------------------");		
 		int chatId = 0;
 		while(true) { // 숫자가 입력되지 않았을 때 다시 채팅 번호를 입력하도록 함
+			System.out.println("-------------------------------------------------------");		
+			findAll();
+			System.out.println("-------------------------------------------------------");		
 			System.out.print("변경하실 채팅의 번호를 입력해주세요. >");
 			try {
 				chatId = sc.nextInt();
 				sc.nextLine();
-				break;
 			} catch(InputMismatchException e) {
 				System.out.println("숫자로 입력해주세요");
 				System.out.println();
 				sc.nextLine();
+				continue;
+			}
+			
+			Chat chat = chatController.findById(chatId);
+			if(chat != null) {
+				break;
+			} else {
+				System.out.println("존재하지 않는 채팅입니다. 다시 입력해주세요.");
 			}
 		}
+		
 		System.out.println("변경하고 싶으신 내용을 입력해주세요.(30자 이하)");
 		String text = sc.nextLine();
 		System.out.println();
-		
 		int result = chatController.updateChat(chatId, new ChatDto(text));
 		if(result == 1) {
 			System.out.println("채팅 수정 성공!");
@@ -111,14 +118,28 @@ public class ChatView {
 	 * Delete the chat
 	 */
 	private void deleteChat() {
-		System.out.println("-------------------------------------------------------");		
-		findAll();
-		System.out.println("-------------------------------------------------------");		
-		System.out.print("삭제하실 채팅의 번호를 입력해주세요 >");
-		String chatId = sc.nextLine();
-		int id = Integer.parseInt(chatId);
+		int id = 0;
+		while(true) {
+			System.out.println();
+			System.out.println("-------------------------------------------------------");		
+			findAll();
+			System.out.println("-------------------------------------------------------");		
+			System.out.print("삭제하실 채팅의 번호를 입력해주세요 >");
+			String chatId = sc.nextLine();
+			try {
+				id = Integer.parseInt(chatId);
+			} catch(NumberFormatException e) {
+				System.out.println("숫자로 입력해주세요.");
+				continue;
+			}
+			Chat chat = chatController.findById(id);
+			if(chat != null) {
+				break;
+			} else {
+				System.out.println("존재하지 않는 채팅입니다. 다시 입력해주세요.");
+			}
+		}
 		System.out.println();
-		
 		Chat result = chatController.deleteChat(id);
 		if(result != null) {
 			System.out.println(id + "번 채팅 삭제 완료되었습니다.");

@@ -36,5 +36,12 @@ public class ChatController {
 	public Chat deleteChat(int chatId) {
 		return chatService.deleteChat(chatId);
 	}
+	
+	/*
+	 * Find the chat
+	 */
+	public Chat findById(int chatId) {
+		return chatService.findById(chatId);
+	}
 
 }
