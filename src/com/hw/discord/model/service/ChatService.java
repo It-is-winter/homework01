@@ -83,8 +83,10 @@ public class ChatService {
 	 * Check that the text is not empty and its length is at most 30
 	 */
 	private boolean validateChatText(String text) {
-		if((0 < text.length()) && (text.length() <= 30)) {
-			return true;
+		if(text != null) {
+			if((0 < text.length()) && (text.length() <= 30)) {
+				return true;
+			}
 		}
 		return false;
 	}

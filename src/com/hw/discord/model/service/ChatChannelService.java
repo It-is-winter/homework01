@@ -91,9 +91,11 @@ public class ChatChannelService {
 	 * 채널 이름이 10자를 넘는지 안넘는지 확인
 	 */
 	private boolean validateChannelName(String channelName) {
-		if(0 < channelName.length() && channelName.length() <= 10) {
-			// 이름에 값이 들어왔나?			이름의 길이가 10자를 넘지 않는가?
-			return true;
+		if(channelName != null) { // if channelName is null, it will throw a NullPointerException
+			if((0 < channelName.length()) && (channelName.length() <= 10)) {
+				// 이름에 값이 들어왔나?			이름의 길이가 10자를 넘지 않는가?
+				return true;
+			}
 		}
 		return false;
 	}
@@ -103,14 +105,6 @@ public class ChatChannelService {
 	 */
 	private int indexOf(int channelId) {
 		int index = -1;
-		/*
-		for(ChatChannel chan : channels) {
-			if(chan.getChannelId() == channelId) {
-				index = channelId - 1;
-				break;
-			}
-		}
-		*/
 		for(int i = 0; i < channels.size(); i++) {
 			if(channels.get(i).getChannelId() == channelId) {
 				index = i;
